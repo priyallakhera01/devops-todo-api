@@ -80,3 +80,4 @@ A missing or blank title returns HTTP `400 Bad Request` with a JSON error messag
 
 This project uses Git branches for development.
 Features are developed in separate branches and merged into the main branch.
+Jenkins CI integration verified.
