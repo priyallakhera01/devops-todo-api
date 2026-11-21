@@ -67,3 +67,16 @@ The API returns the new todo with HTTP `201 Created`, for example:
 ```
 
 A missing or blank title returns HTTP `400 Bad Request` with a JSON error message.
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /todos | Retrieve all todos |
+| POST | /todos | Create a new todo |
+| GET | /health | Check application health |
+
+## Git Workflow
+
+This project uses Git branches for development.
+Features are developed in separate branches and merged into the main branch.
