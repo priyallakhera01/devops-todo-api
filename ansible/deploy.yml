@@ -1,0 +1,7 @@
+---
+# Deploy the Todo API to the hosts in the inventory's servers group.
+- name: Deploy Todo API
+  hosts: servers
+  become: true
+  roles:
+    - todo_api

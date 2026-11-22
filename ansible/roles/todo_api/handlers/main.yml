@@ -1,0 +1,10 @@
+---
+# Apply unit-file changes and restart the application when deployment files change.
+- name: Reload systemd daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart Todo API service
+  ansible.builtin.systemd_service:
+    name: "{{ app_name }}.service"
+    state: restarted

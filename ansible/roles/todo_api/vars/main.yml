@@ -1,0 +1,4 @@
+app_name: todo-api
+app_directory: /opt/todo-api
+app_jar: todo-api-0.0.1-SNAPSHOT.jar
+app_port: 8080

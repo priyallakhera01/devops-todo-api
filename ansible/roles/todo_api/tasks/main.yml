@@ -1,0 +1,61 @@
+---
+# Prepare the host and deploy the Todo API application.
+- name: Install the Java 17 runtime
+  ansible.builtin.apt:
+    name: openjdk-17-jre-headless
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Create a system group for the application
+  ansible.builtin.group:
+    name: "{{ app_name }}"
+    system: true
+    state: present
+
+- name: Create a system user for the application
+  ansible.builtin.user:
+    name: "{{ app_name }}"
+    group: "{{ app_name }}"
+    system: true
+    create_home: false
+    shell: /usr/sbin/nologin
+    state: present
+
+- name: Create the application directory
+  ansible.builtin.file:
+    path: "{{ app_directory }}"
+    state: directory
+    owner: "{{ app_name }}"
+    group: "{{ app_name }}"
+    mode: "0755"
+
+- name: Copy the application JAR to the target host
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/{{ app_jar }}"
+    dest: "{{ app_directory }}/{{ app_jar }}"
+    owner: "{{ app_name }}"
+    group: "{{ app_name }}"
+    mode: "0644"
+  notify: Restart Todo API service
+
+- name: Install the systemd service unit
+  ansible.builtin.template:
+    src: todo-api.service.j2
+    dest: "/etc/systemd/system/{{ app_name }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd daemon
+    - Restart Todo API service
+
+# Apply the unit file before asking systemd to enable or start the service.
+- name: Apply pending systemd handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start the Todo API service
+  ansible.builtin.systemd_service:
+    name: "{{ app_name }}.service"
+    enabled: true
+    state: started
