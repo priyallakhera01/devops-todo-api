@@ -1,0 +1,6 @@
+.git
+.idea
+.vscode
+**/target/*
+!target/todo-api-0.0.1-SNAPSHOT.jar
+todo-api
